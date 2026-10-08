@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>دليل رسم SFD و BMD بطريقة المرونة</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f3f6f4;--card:#fff;--ink:#17252a;--mut:#5b6b70;--line:#cfdad6;--v:#c0392b;--m:#16697a;--acc:#e8a33d}
+:root[data-theme=dark]{--bg:#13201f;--card:#1b2b2a;--ink:#e6efec;--mut:#9fb3ae;--line:#35504b;--v:#ff7b6b;--m:#5fd0e0;--acc:#f0b85a}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#13201f;--card:#1b2b2a;--ink:#e6efec;--mut:#9fb3ae;--line:#35504b;--v:#ff7b6b;--m:#5fd0e0;--acc:#f0b85a}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.8 Tajawal,Tahoma,sans-serif;
+background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:28px 28px;background-attachment:fixed}
+main{max-width:860px;margin:auto;padding:16px}
+h1{font-size:1.7rem;margin:.6em 0 .2em}h2{font-size:1.2rem;margin:0 0 .5em;color:var(--m)}
+.card{background:var(--card);border:1.5px solid var(--ink);border-radius:4px;padding:14px;margin:14px 0;overflow-x:auto}
+p{margin:.4em 0}.mut{color:var(--mut);font-size:.9rem}
+ol,ul{padding-inline-start:1.3em;margin:.3em 0}
+table{border-collapse:collapse;width:100%;font-size:.9rem}td,th{border:1px solid var(--line);padding:6px 8px;text-align:right}th{background:var(--bg)}
+.eq{direction:ltr;text-align:center;font-family:Georgia,serif;font-size:1.05rem;background:var(--bg);padding:6px;border-radius:4px;margin:6px 0;overflow-x:auto}
+select,input,button{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--ink);border-radius:4px;padding:4px 8px}
+input[type=number]{width:72px}button{cursor:pointer}button.p{background:var(--m);color:#fff;border-color:var(--m)}
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:4px 0}
+#res{background:var(--bg);border-inline-start:4px solid var(--acc);padding:8px 12px;margin:8px 0;direction:rtl}
+#res b{direction:ltr;unicode-bidi:isolate}.err{color:var(--v);font-weight:700}
+svg{width:100%;height:auto;direction:ltr;display:block}svg text{font-family:Tajawal,Tahoma,sans-serif}
+details{border-top:1px solid var(--line);padding:6px 0}summary{cursor:pointer;font-weight:700}
+</style></head><body><main>
+<h1>رسم مخططات القص والعزم يدوياً</h1>
+<p class="mut">دليل عام لكل أنواع الكمرات والأحمال بطريقة المرونة (Flexibility Method)، ومعه أداة تحل وترسم لك.</p>
+
+<div class="card"><h2>١) خطوات الحل بمصفوفة المرونة</h2>
+<ol>
+<li><b>درجة اللاتحديد:</b> r = (عدد ردود الأفعال المجهولة) − 2. مثال: عمود ثابت + ساندين مفصلية → A1, M1, A2, A3 = 4 مجاهيل، r = 2.</li>
+<li><b>اختر المجاهيل الزائدة X</b> (r منها، مثل A2 و M1) وأزلها، فتصبح الكمرة محددة (الكمرة الأساسية).</li>
+<li><b>احسب الانتقالات Δ<sub>i0</sub></b> عند أماكن المجاهيل بسبب الأحمال الأصلية على الكمرة الأساسية.</li>
+<li><b>احسب معاملات المرونة f<sub>ij</sub></b> = الانتقال في الموضع i بسبب قوة (أو عزم) قيمته 1 في الموضع j.</li>
+<li><b>معادلة التوافق:</b> الانتقال الحقيقي عند الساند معلوم (غالباً صفر).
+<div class="eq">[ f<sub>11</sub> f<sub>12</sub> ; f<sub>21</sub> f<sub>22</sub> ] { X<sub>1</sub> ; X<sub>2</sub> } = { Δ<sub>1</sub> − Δ<sub>10</sub> ; Δ<sub>2</sub> − Δ<sub>20</sub> }</div></li>
+<li><b>الاتزان:</b> ΣFy = 0 و ΣM = 0 تعطيك باقي المجاهيل (A1, M1 ...).</li>
+<li><b>ارسم V ثم M</b> (القواعد في القسم ٣).</li></ol>
+<details><summary>جدول جاهز: كابولي (ثابت عند A، حر عند B)</summary>
+<table><tr><th>الحالة</th><th>الهبوط Δ<sub>B</sub></th><th>الدوران θ<sub>B</sub></th></tr>
+<tr><td>قوة وحدة عند B</td><td>L³/3EI</td><td>L²/2EI</td></tr>
+<tr><td>عزم وحدة عند B</td><td>L²/2EI</td><td>L/EI</td></tr>
+<tr><td>حمل نقطي P عند B</td><td>PL³/3EI</td><td>PL²/2EI</td></tr>
+<tr><td>حمل موزع w على كامل الطول</td><td>wL⁴/8EI</td><td>wL³/6EI</td></tr></table></details>
+<p class="mut">الأداة بالأسفل تبني نفس المعادلات (اتزان + توافق الانتقالات عند الساند) وتحلها عددياً، وتعرض لك A وM عند كل ساند.</p></div>
+
+<div class="card"><h2>٢) الأداة التفاعلية</h2>
+<div class="row"><label>حالة جاهزة:</label><select id="pre"></select>
+<label>الطول L (م):</label><input type="number" id="L" value="6" min="1" step="0.5"></div>
+<b>السنادات</b><div id="sup"></div><button onclick="add('S')">+ ساند</button>
+<div style="margin-top:8px"><b>الأحمال</b></div><div id="lod"></div><button onclick="add('W')">+ حمل</button>
+<div id="res" aria-live="polite"></div>
+<svg id="svg" viewBox="0 0 700 560" role="img" aria-label="مخططات القص والعزم"></svg>
+<div class="row"><label for="cut">قص المقطع عند x:</label><input type="range" id="cut" min="0" max="1" step="0.001" value="0.3" style="flex:1;min-width:160px"><span id="cv"></span></div>
+<p class="mut">V موجب للأعلى. M موجب يُرسم للأسفل (جهة الشد). الأحمال لأسفل موجبة، والعزم المسلّط موجب مع عقارب الساعة.</p></div>
+
+<div class="card"><h2>٣) قواعد الرسم لكل حالة حمل</h2>
+<table><tr><th>ما يحدث على الكمرة</th><th>مخطط V</th><th>مخطط M</th></tr>
+<tr><td>لا حمل</td><td>خط أفقي</td><td>خط مائل</td></tr>
+<tr><td>حمل موزع منتظم w</td><td>خط مائل (ميله −w)</td><td>قطع مكافئ (محدب نحو الحمل)</td></tr>
+<tr><td>حمل موزع مثلثي</td><td>قطع مكافئ</td><td>منحنى من الدرجة الثالثة</td></tr>
+<tr><td>حمل نقطي أو رد فعل</td><td>قفزة بمقدار الحمل</td><td>تغيّر في الميل (زاوية)</td></tr>
+<tr><td>عزم مسلّط أو عزم ساند</td><td>لا تغيّر</td><td>قفزة بمقدار العزم</td></tr>
+<tr><td>ساند مفصلي أو طرف حر بلا عزم</td><td>—</td><td>M = 0</td></tr>
+<tr><td>ساند ثابت</td><td>V = رد الفعل</td><td>M = عزم الساند</td></tr></table>
+<ul><li>العلاقات: dV/dx = −w ، dM/dx = V. فالتغيّر في V = −(مساحة الحمل)، والتغيّر في M = مساحة مخطط V.</li>
+<li>العزم الأقصى حيث V = 0 (استخدم المنزلق بالأعلى لتراه).</li>
+<li>تحقق: عند آخر نقطة يجب أن يعود V إلى 0 و M إلى 0 (أو لعزم الساند الثابت).</li></ul></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const PRE={
+'بسيطة + حمل منتظم':{L:6,S:[[0,'pin'],[6,'pin']],W:[['w',0,6,10]]},
+'بسيطة + حمل نقطي':{L:6,S:[[0,'pin'],[6,'pin']],W:[['P',2,0,20]]},
+'كابولي + حمل منتظم':{L:4,S:[[0,'fix']],W:[['w',0,4,8]]},
+'كابولي + حمل نقطي':{L:4,S:[[0,'fix']],W:[['P',4,0,15]]},
+'ثابتة من الطرفين':{L:6,S:[[0,'fix'],[6,'fix']],W:[['w',0,6,10]]},
+'ثابت + مفصلي (Propped)':{L:6,S:[[0,'fix'],[6,'pin']],W:[['w',0,6,10],['P',3,0,12]]},
+'كمرة بالتواء (Overhang)':{L:8,S:[[0,'pin'],[6,'pin']],W:[['w',0,6,6],['P',8,0,10]]},
+'مستمرة بفتحتين':{L:10,S:[[0,'pin'],[5,'pin'],[10,'pin']],W:[['w',0,10,10]]},
+'مستمرة بثلاث فتحات':{L:12,S:[[0,'pin'],[4,'pin'],[8,'pin'],[12,'pin']],W:[['w',0,4,10],['P',6,0,20]]},
+'بسيطة + عزم مسلّط':{L:6,S:[[0,'pin'],[6,'pin']],W:[['C',3,0,30]]}};
+let L=6,S=[],W=[];
+$('pre').innerHTML=Object.keys(PRE).map(k=>`<option>${k}</option>`).join('');
+$('pre').onchange=()=>load($('pre').value);
+function load(k){const p=PRE[k];L=p.L;S=p.S.map(s=>({x:s[0],t:s[1]}));W=p.W.map(w=>({k:w[0],a:w[1],b:w[2],v:w[3]}));$('L').value=L;ui();run()}
+$('L').onchange=()=>{L=Math.max(1,+$('L').value);run()};
+function add(t){if(t=='S')S.push({x:L/2,t:'pin'});else W.push({k:'P',a:L/2,b:L,v:10});ui();run()}
+function del(t,i){(t=='S'?S:W).splice(i,1);ui();run()}
+function upd(t,i,f,v){const o=(t=='S'?S:W)[i];o[f]=(f=='t'||f=='k')?v:+v;if(t=='W'&&o.k=='w'&&f=='k'){o.a=0;o.b=L}ui();run()}
+function ui(){
+$('sup').innerHTML=S.map((s,i)=>`<div class="row"><span>${i+1}:</span> x=<input type="number" step="0.5" value="${s.x}" onchange="upd('S',${i},'x',this.value)">
+<select onchange="upd('S',${i},'t',this.value)"><option value="pin" ${s.t=='pin'?'selected':''}>مفصلي/متحرك</option><option value="fix" ${s.t=='fix'?'selected':''}>ثابت (طرف فقط)</option></select>
+<button onclick="del('S',${i})" aria-label="حذف">✕</button></div>`).join('');
+$('lod').innerHTML=W.map((w,i)=>`<div class="row"><select onchange="upd('W',${i},'k',this.value)"><option value="P" ${w.k=='P'?'selected':''}>نقطي P (kN)</option><option value="w" ${w.k=='w'?'selected':''}>موزع w (kN/m)</option><option value="C" ${w.k=='C'?'selected':''}>عزم C (kN·m)</option></select>
+${w.k=='w'?'من':'عند'} x=<input type="number" step="0.5" value="${w.a}" onchange="upd('W',${i},'a',this.value)">
+${w.k=='w'?`إلى <input type="number" step="0.5" value="${w.b}" onchange="upd('W',${i},'b',this.value)">`:''}
+القيمة <input type="number" step="1" value="${w.v}" onchange="upd('W',${i},'v',this.value)">
+<button onclick="del('W',${i})" aria-label="حذف">✕</button></div>`).join('')}
+const p=(t,n)=>t>0?Math.pow(t,n):0,h=t=>t>=-1e-9?1:0;
+function setup(){
+const U=[];S.forEach((s,i)=>U.push({t:'R',x:s.x,i}));
+S.forEach((s,i)=>{if(s.t=='fix'){if(Math.abs(s.x)<1e-9)U.push({t:'Mf',l:1,i});else if(Math.abs(s.x-L)<1e-9)U.push({t:'Mf',l:0,i});else s.t='pin'}});
+U.push({t:'y0'},{t:'th0'});return U}
+function cv(u,x){
+if(u.t=='R'){const t=x-u.x;return[p(t,1),p(t,2)/2,p(t,3)/6]}
+if(u.t=='Mf')return u.l?[h(x),p(x,1),p(x,2)/2]:[0,0,0];
+if(u.t=='y0')return[0,0,1];return[0,1,x]}
+function ld(x){let m=0,th=0,y=0;W.forEach(w=>{const v=w.v,a=w.a,b=w.b;
+if(w.k=='P'){m-=v*p(x-a,1);th-=v*p(x-a,2)/2;y-=v*p(x-a,3)/6}
+else if(w.k=='w'){m-=v/2*(p(x-a,2)-p(x-b,2));th-=v/6*(p(x-a,3)-p(x-b,3));y-=v/24*(p(x-a,4)-p(x-b,4))}
+else{m+=v*h(x-a);th+=v*p(x-a,1);y+=v*p(x-a,2)/2}});return[m,th,y]}
+function solve(U){
+const N=U.length,A=[],B=[];
+S.forEach(s=>{A.push(U.map(u=>cv(u,s.x)[2]));B.push(-ld(s.x)[2])});
+U.forEach(u=>{if(u.t=='Mf'){const x=u.l?0:L;A.push(U.map(q=>cv(q,x)[1]));B.push(-ld(x)[1])}});
+let F=0,Mo=0;W.forEach(w=>{if(w.k=='P'){F+=w.v;Mo+=w.v*w.a}else if(w.k=='w'){F+=w.v*(w.b-w.a);Mo+=w.v*(w.b-w.a)*(w.a+w.b)/2}else Mo+=w.v});
+A.push(U.map(u=>u.t=='R'?1:0));B.push(F);
+A.push(U.map(u=>u.t=='R'?-u.x:u.t=='Mf'?1:0));B.push(-Mo);
+if(A.length!=N)return null;
+for(let c=0;c<N;c++){let r=c;for(let i=c+1;i<N;i++)if(Math.abs(A[i][c])>Math.abs(A[r][c]))r=i;
+if(Math.abs(A[r][c])<1e-9)return null;[A[c],A[r]]=[A[r],A[c]];[B[c],B[r]]=[B[r],B[c]];
+for(let i=0;i<N;i++)if(i!=c){const f=A[i][c]/A[c][c];for(let j=c;j<N;j++)A[i][j]-=f*A[c][j];B[i]-=f*B[c]}}
+return B.map((b,i)=>b/A[i][i])}
+const f2=v=>(Math.abs(v)<1e-7?0:v).toFixed(2);
+function run(){
+const U=setup(),sol=solve(U),r=$('res'),svg=$('svg');
+const nr=U.filter(u=>u.t!='y0'&&u.t!='th0').length;
+if(!sol){r.innerHTML='<span class="err">الكمرة غير مستقرة أو المدخلات غير صحيحة: تأكد أن عدد المجاهيل كافٍ لمنع الحركة (ساندان على الأقل، أو ساند ثابت).</span>';svg.innerHTML='';return}
+let t=`درجة اللاتحديد r = ${nr} − 2 = <b>${nr-2}</b><br>`;
+U.forEach((u,j)=>{if(u.t=='R')t+=`A${u.i+1} = <b>${f2(sol[j])} kN</b> ${sol[j]>=0?'↑':'↓'} &nbsp; `;
+if(u.t=='Mf')t+=`M${u.i+1} = <b>${f2(Math.abs(sol[j]))} kN·m</b> ${sol[j]>=0?'⟳':'⟲'} (على الكمرة) &nbsp; `});
+r.innerHTML=t;
+const R=U.map((u,j)=>sol[j]);
+const Vf=x=>{let v=0;U.forEach((u,j)=>{if(u.t=='R')v+=R[j]*h(x-u.x)});
+W.forEach(w=>{if(w.k=='P')v-=w.v*h(x-w.a);else if(w.k=='w')v-=w.v*(p(x-w.a,1)-p(x-w.b,1))});return v};
+const Mf=x=>{let m=ld(x)[0];U.forEach((u,j)=>{m+=R[j]*cv(u,x)[0]});return m};
+const K=new Set([0,L]);S.forEach(s=>K.add(s.x));W.forEach(w=>{K.add(w.a);if(w.k=='w')K.add(w.b)});
+const xs=[];for(let i=0;i<=300;i++)xs.push(L*i/300);
+K.forEach(k=>{if(k>=0&&k<=L){xs.push(k+1e-7,k-1e-7)}});
+const pts=xs.filter(x=>x>=0&&x<=L).sort((a,b)=>a-b);
+const Vs=pts.map(Vf),Ms=pts.map(Mf);
+const mV=Math.max(1e-9,...Vs.map(Math.abs)),mM=Math.max(1e-9,...Ms.map(Math.abs));
+const X0=50,X1=650,sx=x=>X0+(X1-X0)*x/L;
+const yb=90,vc=250,vs=55/mV,mc=430,ms=65/mM;
+let s=`<line x1="${X0}" x2="${X1}" y1="${yb}" y2="${yb}" stroke="var(--ink)" stroke-width="5"/>`;
+S.forEach((q,i)=>{const x=sx(q.x);
+if(q.t=='fix'){const d=q.x<L/2?-1:1;s+=`<line x1="${x}" x2="${x}" y1="${yb-22}" y2="${yb+22}" stroke="var(--ink)" stroke-width="4"/>`+[...Array(5)].map((_,k)=>`<line x1="${x}" y1="${yb-18+k*9}" x2="${x+d*10}" y2="${yb-10+k*9}" stroke="var(--ink)"/>`).join('')}
+else s+=`<path d="M${x} ${yb+3}L${x-9} ${yb+20}H${x+9}Z" fill="var(--card)" stroke="var(--ink)" stroke-width="2"/>`;
+s+=`<text x="${x}" y="${yb+38}" text-anchor="middle" font-size="13" fill="var(--mut)">A${i+1}</text>`});
+W.forEach(w=>{const a=sx(w.a),b=sx(w.k=='w'?w.b:w.a);
+if(w.k=='P')s+=`<path d="M${a} ${yb-45}V${yb-6}" stroke="var(--v)" stroke-width="2.5"/><path d="M${a-5} ${yb-13}L${a} ${yb-5}L${a+5} ${yb-13}" fill="none" stroke="var(--v)" stroke-width="2.5"/><text x="${a}" y="${yb-50}" text-anchor="middle" font-size="12" fill="var(--v)">${w.v}</text>`;
+else if(w.k=='w'){s+=`<rect x="${a}" y="${yb-28}" width="${Math.max(2,b-a)}" height="20" fill="var(--v)" opacity=".15" stroke="var(--v)"/><text x="${(a+b)/2}" y="${yb-34}" text-anchor="middle" font-size="12" fill="var(--v)">w=${w.v}</text>`}
+else s+=`<path d="M${a-12} ${yb-30}A14 14 0 1 1 ${a+12} ${yb-30}" fill="none" stroke="var(--m)" stroke-width="2.5"/><text x="${a}" y="${yb-52}" text-anchor="middle" font-size="12" fill="var(--m)">${w.v}</text>`});
+const poly=(arr,c,k,col)=>`<polygon points="${sx(0)},${c} ${pts.map((x,i)=>sx(x)+','+(c-k*arr[i])).join(' ')} ${sx(L)},${c}" fill="${col}" fill-opacity=".18" stroke="${col}" stroke-width="2.2"/>`;
+s+=`<text x="${X0}" y="${vc-72}" font-size="14" font-weight="700" fill="var(--v)">مخطط القص V (kN)</text><line x1="${X0}" x2="${X1}" y1="${vc}" y2="${vc}" stroke="var(--mut)"/>`+poly(Vs,vc,vs,'var(--v)');
+s+=`<text x="${X0}" y="${mc-82}" font-size="14" font-weight="700" fill="var(--m)">مخطط العزم M (kN·m) — الشد للأسفل</text><line x1="${X0}" x2="${X1}" y1="${mc}" y2="${mc}" stroke="var(--mut)"/>`+poly(Ms,mc,-ms,'var(--m)');
+const lab=(x,y,t,c,dy)=>`<text x="${sx(x)}" y="${y+dy}" text-anchor="middle" font-size="11" fill="${c}" paint-order="stroke" stroke="var(--card)" stroke-width="3">${t}</text>`;
+const seen=new Set();
+K.forEach(k=>{[k+1e-6,k-1e-6].forEach(x=>{if(x<0||x>L)return;const v=Vf(x);if(Math.abs(v)>1e-4){const key='v'+k.toFixed(3)+v.toFixed(2);if(!seen.has(key)){seen.add(key);s+=lab(x,vc-vs*v,f2(v),'var(--v)',v>=0?-6:14)}}});
+const m=Mf(Math.min(L,Math.max(0,k)));if(Math.abs(m)>1e-4)s+=lab(k,mc+ms*m,f2(m),'var(--m)',m>=0?14:-6)});
+let im=0;Ms.forEach((m,i)=>{if(Math.abs(m)>Math.abs(Ms[im]))im=i});
+s+=`<circle cx="${sx(pts[im])}" cy="${mc+ms*Ms[im]*-1*-1}" r="4" fill="var(--acc)" stroke="var(--ink)"/>`+lab(pts[im],mc+ms*Ms[im],'|M|max='+f2(Ms[im]),'var(--ink)',Ms[im]>=0?28:-18);
+const cx=+$('cut').value*L,vv=Vf(cx),mm=Mf(cx);
+s+=`<line x1="${sx(cx)}" x2="${sx(cx)}" y1="${yb-20}" y2="${mc+80}" stroke="var(--acc)" stroke-width="2" stroke-dasharray="5 4"/><circle cx="${sx(cx)}" cy="${vc-vs*vv}" r="4.5" fill="var(--acc)"/><circle cx="${sx(cx)}" cy="${mc+ms*mm}" r="4.5" fill="var(--acc)"/>`;
+s+=`<text x="${X1}" y="545" text-anchor="end" font-size="12" fill="var(--mut)">ملاحظة: الأرقام هنا مأخوذة من الحل العددي (EI ثابت)</text>`;
+svg.innerHTML=s;
+$('cv').innerHTML=`x=<b>${cx.toFixed(2)}</b> م &nbsp; V=<b>${f2(vv)}</b> &nbsp; M=<b>${f2(mm)}</b>`}
+$('cut').oninput=run;
+load('بسيطة + حمل منتظم');
+</script></main></body></html>
